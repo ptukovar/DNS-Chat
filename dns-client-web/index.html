@@ -345,6 +345,16 @@
             }
         };
 
+        function escapeHTML(str) {
+            if (str === null || str === undefined) return "";
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
         function renderMessages(data) {
             chatWindow.innerHTML = data.map(msg => {
                 let isMe;
@@ -360,10 +370,13 @@
                 // Time formatting - not used rn
                 const time = new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
 
+                const safeUser = escapeHTML(msg.user);
+                const safeText = escapeHTML(msg.text);
+
                 return (`<div class="message-row ${cssClass}">
                         <div class="bubble">
-                            <span class="meta">${msg.user} • ${tag}</span> 
-                            ${msg.text}
+                            <span class="meta">${safeUser} • ${tag}</span> 
+                            ${safeText}
                         </div>
                     </div>`)
                 ; // ${time}
@@ -436,5 +449,5 @@
             }
         });
     </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a29681f2cba0c1bb',t:'MTc4NjQ0MzYyNQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
